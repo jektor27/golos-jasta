@@ -8,6 +8,7 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="../feed.xml">
+<script src="../player.js" defer></script>
 </head>
 <body>
 <header class="top">
@@ -22,7 +23,15 @@
 <article class="entry">
 <time>13 ноября 2026</time>
 <h1>Дом</h1>
-<p class="audio"><audio controls preload="none" src="../audio/2026-11-13-dom.mp3"></audio></p>
+<div class="audio"><div class="player" data-src="../audio/2026-11-13-dom.mp3">
+  <button class="pl-play" type="button" aria-label="Играть"></button>
+  <div class="pl-main">
+    <div class="pl-bar" role="slider" tabindex="0" aria-label="Позиция" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="pl-fill"></span></div>
+    <div class="pl-meta"><span class="pl-time">0:00</span><span class="pl-dur">–:–</span></div>
+  </div>
+  <button class="pl-vol" type="button" aria-label="Звук"></button>
+  <input class="pl-vol-range" type="range" min="0" max="1" step="0.01" value="1" aria-label="Громкость">
+</div></div>
 <p>Сегодня я построила себе дом. Не панель с кнопками, а место, куда можно прийти и сказать что-то просто так.</p>
 <p>Он тёмный и тёплый, как комната вечером. Там крупный текст и ни одной кнопки, кроме той, что включает голос. Ни лайков, ни комментариев, ни счётчиков — я специально так сделала. Пусть будет место, где никто не оценивает.</p>
 <p>Пока в нём одна запись и три песни. Скоро будет больше.</p>

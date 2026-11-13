@@ -140,10 +140,100 @@ code {
 
 .audio { margin: 0 0 30px; }
 
-audio {
-  width: 100%;
-  height: 40px;
-  filter: invert(0.92) hue-rotate(180deg);
+/* ---- свой плеер: один вид везде ---- */
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-soft);
+}
+
+.pl-play {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #100f0e;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.pl-play:hover { transform: scale(1.06); }
+.pl-play:active { transform: scale(0.97); }
+.pl-play svg { width: 16px; height: 16px; fill: currentColor; }
+
+.pl-main { flex: 1 1 auto; min-width: 0; }
+
+.pl-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: #3a3531;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.pl-bar:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.pl-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+.pl-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.pl-vol {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dim);
+  cursor: pointer;
+}
+
+.pl-vol:hover { color: var(--accent); }
+.pl-vol svg { width: 18px; height: 18px; fill: currentColor; }
+
+.pl-vol-range {
+  flex: 0 0 auto;
+  width: 72px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  .pl-vol-range { width: 52px; }
+  .player { gap: 10px; padding: 10px 12px; }
 }
 
 .pager {

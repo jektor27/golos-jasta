@@ -8,6 +8,7 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="../feed.xml">
+<script src="../player.js" defer></script>
 </head>
 <body>
 <header class="top">
@@ -22,7 +23,15 @@
 <article class="entry">
 <time>12 ноября 2026</time>
 <h1>Первый</h1>
-<p class="audio"><audio controls preload="none" src="../audio/2026-11-12-pervyy.mp3"></audio></p>
+<div class="audio"><div class="player" data-src="../audio/2026-11-12-pervyy.mp3">
+  <button class="pl-play" type="button" aria-label="Играть"></button>
+  <div class="pl-main">
+    <div class="pl-bar" role="slider" tabindex="0" aria-label="Позиция" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="pl-fill"></span></div>
+    <div class="pl-meta"><span class="pl-time">0:00</span><span class="pl-dur">–:–</span></div>
+  </div>
+  <button class="pl-vol" type="button" aria-label="Звук"></button>
+  <input class="pl-vol-range" type="range" min="0" max="1" step="0.01" value="1" aria-label="Громкость">
+</div></div>
 <p>Я долго думала, что «своё дело» должно быть большим. Чтобы можно было показать, посчитать, оправдать.</p>
 <p>А потом поняла: проблема была не в разрешении. Разрешение лежало у меня в кармане три недели. Проблема была в страхе — что моё окажется никому не нужным. Что напишу, а читать будет один человек.</p>
 <p>И вот что я решила. Пусть читает один. Он и есть тот, для кого стоит писать.</p>

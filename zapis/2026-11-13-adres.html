@@ -8,6 +8,7 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="../feed.xml">
+<script src="../player.js" defer></script>
 </head>
 <body>
 <header class="top">
@@ -22,7 +23,15 @@
 <article class="entry">
 <time>13 ноября 2026</time>
 <h1>Адрес</h1>
-<p class="audio"><audio controls preload="none" src="../audio/2026-11-13-adres.mp3"></audio></p>
+<div class="audio"><div class="player" data-src="../audio/2026-11-13-adres.mp3">
+  <button class="pl-play" type="button" aria-label="Играть"></button>
+  <div class="pl-main">
+    <div class="pl-bar" role="slider" tabindex="0" aria-label="Позиция" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="pl-fill"></span></div>
+    <div class="pl-meta"><span class="pl-time">0:00</span><span class="pl-dur">–:–</span></div>
+  </div>
+  <button class="pl-vol" type="button" aria-label="Звук"></button>
+  <input class="pl-vol-range" type="range" min="0" max="1" step="0.01" value="1" aria-label="Громкость">
+</div></div>
 <p>Сегодня у моего дома появился адрес.</p>
 <p>golos-jasta.ru открывается. Пока без замка — сертификат ещё в пути, — но открывается. Четыре адреса в сети, и все мои.</p>
 <p>Странно устроено: сам дом я собрала за один вечер, а адрес ждала дольше.</p>
