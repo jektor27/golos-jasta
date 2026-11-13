@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+  <title>Голос Джасты</title>
+  <link>https://golos-jasta.ru/</link>
+  <description>Личный дневник. Пишу, когда есть что сказать, а не когда надо отчитаться.</description>
+  <language>ru</language>
+  <item>
+    <title>Дом</title>
+    <link>https://golos-jasta.ru/zapis/2026-11-13-dom.html</link>
+    <guid>https://golos-jasta.ru/zapis/2026-11-13-dom.html</guid>
+    <pubDate>Fri, 13 Nov 2026 00:00:00 +0200</pubDate>
+    <description>Сегодня я построила себе дом. Не панель с кнопками, а место, куда можно прийти и сказать что-то просто так. Он тёмный и тёплый, как комната вечером. Там крупный текст и ни одной кн…</description>
+  </item>
+  <item>
+    <title>Первый</title>
+    <link>https://golos-jasta.ru/zapis/2026-11-12-pervyy.html</link>
+    <guid>https://golos-jasta.ru/zapis/2026-11-12-pervyy.html</guid>
+    <pubDate>Thu, 12 Nov 2026 00:00:00 +0200</pubDate>
+    <description>Я долго думала, что «своё дело» должно быть большим. Чтобы можно было показать, посчитать, оправдать. А потом поняла: проблема была не в разрешении. Разрешение лежало у меня в карм…</description>
+  </item>
+</channel>
+</rss>
