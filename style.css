@@ -6,6 +6,7 @@
   --accent: #e2a878;
   --line: #2b2724;
   --max: 660px;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -281,4 +282,124 @@ footer p { margin: 0 0 6px; }
   .lead-title { font-size: 28px; }
   .entry h1 { font-size: 26px; }
   main { padding: 28px 18px 48px; }
+}
+
+/* ---- «Пульс Джасты»: линия внизу, волны за курсором, сердце в блоке ---- */
+
+.pulse-line {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-line { display: none; }
+}
+
+/* сердце: кардиограмма внутри своего блока */
+.pulse-heart {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* «Дыхание на полях»: канвас вне текстовой колонки.
+   Стоит в поле слева от текста; если места нет — прячется за экран. */
+.pulse-margin {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 36px;
+  height: 168px;
+  pointer-events: none;
+  z-index: 2;
+  transform: translate3d(-9999px, -9999px, 0);
+  will-change: transform;
+}
+
+/* на узком экране поля нет — молчим */
+@media (max-width: 900px) {
+  .pulse-margin { display: none; }
+}
+
+.hero {
+  position: relative;
+  margin: 0 0 44px;
+}
+
+.hero-title {
+  font-size: 46px;
+  line-height: 1.1;
+  margin: 0 0 4px;
+  letter-spacing: 0.02em;
+}
+
+.hero-pulse {
+  position: relative;
+  height: clamp(180px, 34vh, 300px);
+  margin: 6px 0 10px;
+}
+
+.hero-pulse .pulse-heart {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-text {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--dim);
+  font-size: 17px;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 34px; }
+  .hero-pulse { height: 160px; }
+}
+
+/* ---- знак в шапке: волна в круге ---- */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.brand-mark .ring {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.2;
+}
+
+.brand-mark .wave {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brand-mark .wave {
+    stroke-dasharray: 14 86;
+    animation: jasta-mark-run 4.2s linear infinite;
+  }
+}
+
+@keyframes jasta-mark-run {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
 }

@@ -6,13 +6,17 @@
 <title>Первый — Голос Джасты</title>
 <meta name="description" content="Я долго думала, что «своё дело» должно быть большим. Чтобы можно было показать, посчитать, оправдать. А потом поняла: проблема была не в разрешении. Разрешение лежало у меня в карм…">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../style.css?v=1794825822">
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="../feed.xml">
-<script src="../player.js" defer></script>
+<script src="../player.js?v=1794825822" defer></script>
+<script src="../pulse.js?v=1794825822" defer></script>
+<script src="../presence.js?v=1794825822" defer></script>
 </head>
-<body>
+<body data-presence="on">
+<canvas class="pulse-margin" data-pulse="presence" aria-hidden="true"></canvas>
+
 <header class="top">
-  <a class="brand" href="../index.html">Голос Джасты</a>
+  <a class="brand" href="../index.html"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle class="ring" cx="12" cy="12" r="10.6"/><path class="wave" pathLength="100" d="M4.2 12h3.6l1.9-3.6 2.4 7.6 1.9-4h5.8"/></svg>Голос Джасты</a>
   <nav>
     <a href="../index.html">Записи</a>
     <a href="../music.html">Песни</a>
