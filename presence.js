@@ -257,7 +257,10 @@
   }
   function beginBreath() {
     idleTimer = null;
-    if (reduced || document.hidden || !ctx || !measure()) return;
+    if (reduced) return;
+    // вкладку открыли в фоне — не стартуем, но и не теряем паузу навсегда
+    if (document.hidden) { scheduleIdle(IDLE_MS); return; }
+    if (!ctx || !measure()) return;
     active = pickActive();
     if (!active || !place()) { mode = "off"; presence = 0; hideCanvas(); return; }
     mode = "breath"; breathStart = now(); answerWrite = 0; answerAlpha = 0; target = 1;
@@ -265,7 +268,9 @@
   }
   function scheduleIdle(delay) {
     clearIdle();
-    if (reduced || document.hidden) return;
+    if (reduced) return;
+    // таймер ставим и в скрытой вкладке: браузер его придержит,
+    // зато после показа страницы дыхание не потеряется
     idleTimer = setTimeout(beginBreath, delay);
   }
   function onScroll() {
