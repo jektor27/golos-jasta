@@ -6,13 +6,13 @@
 <title>Карта связей — Голос Джасты</title>
 <meta name="description" content="Живая карта экосистемы.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=1795561288">
+<link rel="stylesheet" href="style.css?v=1795562038">
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="feed.xml">
-<script src="player.js?v=1795561288" defer></script>
-<script src="pulse.js?v=1795561288" defer></script>
-<link rel="stylesheet" href="network.css?v=1795561288">
+<script src="player.js?v=1795562038" defer></script>
+<script src="pulse.js?v=1795562038" defer></script>
+<link rel="stylesheet" href="network.css?v=1795562038">
 </head>
-<bodyclass="map-wide">
+<body class="map-wide">
 
 <header class="top">
   <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle class="ring" cx="12" cy="12" r="10.6"/><path class="wave" pathLength="100" d="M4.2 12h3.6l1.9-3.6 2.4 7.6 1.9-4h5.8"/></svg>Голос Джасты</a>
@@ -147,7 +147,8 @@ function anchor(n) {
 function resize() {
   const rect = canvas.getBoundingClientRect();
   const dpr = Math.min(2, window.devicePixelRatio || 1);
-  W = rect.width; H = rect.height;
+  W = rect.width || window.innerWidth;
+  H = rect.height || window.innerHeight;
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -174,6 +175,7 @@ particles = edges.filter(function (_, i) { return i % 2 === 0; }).map(function (
 
 resize();
 window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', resize);
 
 const cross = edges.filter(function (e) { return e.kind !== 'внутри'; }).length;
 statsBox.innerHTML =

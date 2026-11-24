@@ -1,19 +1,45 @@
-body.map-wide .top,
-body.map-wide main { max-width: 1240px; }
-body.map-wide main { padding: 0; }
-body.map-wide footer { max-width: 1240px; }
+body.map-wide { overflow-x: hidden; }
+
+body.map-wide .top {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: none;
+  margin: 0;
+  padding: 16px min(4vw, 48px);
+  border-bottom: 0;
+}
+
+body.map-wide .top .brand { font-size: 18px; }
+body.map-wide .top nav a {
+  margin-left: min(2vw, 20px);
+  font-size: 14px;
+}
+
+body.map-wide main { max-width: none; padding: 0; }
+
+body.map-wide footer {
+  max-width: none;
+  padding-left: min(4vw, 48px);
+  padding-right: min(4vw, 48px);
+}
 
 .map-page {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 20px 60px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 60px;
 }
 
 .map-stage {
   position: relative;
-  height: calc(100vh - 78px);
-  min-height: 560px;
-  margin: 0 -20px;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -28,9 +54,9 @@ body.map-wide footer { max-width: 1240px; }
 .map-overlay {
   position: absolute;
   z-index: 2;
-  top: 26px;
-  left: 30px;
-  max-width: 620px;
+  top: 104px;
+  left: min(4vw, 48px);
+  max-width: min(620px, 70vw);
   pointer-events: none;
 }
 
@@ -43,7 +69,7 @@ body.map-wide footer { max-width: 1240px; }
 }
 
 .map-overlay h1 {
-  font-size: clamp(34px, 5vw, 58px);
+  font-size: clamp(30px, 4.2vw, 62px);
   line-height: 1.08;
   font-weight: 400;
   margin: 10px 0 10px;
@@ -61,8 +87,8 @@ body.map-wide footer { max-width: 1240px; }
 .map-stats {
   position: absolute;
   z-index: 2;
-  left: 30px;
-  bottom: 24px;
+  left: min(4vw, 48px);
+  bottom: 26px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -90,13 +116,13 @@ body.map-wide footer { max-width: 1240px; }
 .map-legend {
   position: absolute;
   z-index: 3;
-  right: 26px;
-  bottom: 24px;
+  right: min(4vw, 48px);
+  bottom: 26px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 6px 12px;
-  max-width: 480px;
+  max-width: min(560px, 60vw);
   font: 11px/1.4 system-ui, sans-serif;
   color: #9f988d;
 }
@@ -121,7 +147,7 @@ body.map-wide footer { max-width: 1240px; }
 .map-hint {
   position: absolute;
   z-index: 2;
-  left: 30px;
+  left: min(4vw, 48px);
   top: 50%;
   font: 11px/1.5 system-ui, sans-serif;
   color: rgba(190, 180, 165, .5);
@@ -147,6 +173,13 @@ body.map-wide footer { max-width: 1240px; }
 
 .map-tip b { color: var(--accent); font-weight: 600; }
 .map-tip small { color: var(--dim); word-break: break-all; }
+
+.map-lines,
+.map-growth,
+.map-voice {
+  margin-left: min(4vw, 48px);
+  margin-right: min(4vw, 48px);
+}
 
 .map-lines {
   display: grid;
@@ -205,10 +238,13 @@ body.map-wide footer { max-width: 1240px; }
 .map-voice p:last-child { margin-bottom: 0; }
 
 @media (max-width: 760px) {
-  .map-stage { height: 620px; }
-  .map-overlay { top: 18px; left: 18px; right: 18px; }
-  .map-stats { left: 18px; bottom: 76px; }
-  .map-legend { left: 18px; right: 18px; bottom: 14px; justify-content: flex-start; }
+  .map-stage { height: 100svh; min-height: 520px; }
+  .map-overlay { top: 96px; left: 18px; right: 18px; max-width: none; }
+  .map-overlay h1 { font-size: clamp(28px, 8vw, 40px); }
+  .map-stats { left: 18px; bottom: 92px; }
+  .map-legend { left: 18px; right: 18px; bottom: 14px; max-width: none; justify-content: flex-start; }
   .map-hint { display: none; }
+  .map-lines, .map-growth, .map-voice { margin-left: 18px; margin-right: 18px; }
   .map-lines { grid-template-columns: 1fr; }
+  .map-tip { max-width: calc(100vw - 36px); }
 }
