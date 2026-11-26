@@ -1,6 +1,5 @@
 :root {
   --jasta-gold: #f2c14e;
-  --jasta-bg: #0a120e;
 }
 
 .jasta-curtain {
@@ -35,18 +34,7 @@
   transform: translateY(0);
 }
 
-html.jasta-page-enter body {
-  opacity: 0;
-  transform: translateY(10px);
-}
-html.jasta-page-enter body.jasta-ready {
-  opacity: 1;
-  transform: none;
-  transition: opacity .5s ease, transform .5s ease;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .jasta-curtain,
-  .jasta-curtain__mark,
-  html.jasta-page-enter body.jasta-ready { transition: none !important; }
+  .jasta-curtain__mark { transition: none !important; }
 }

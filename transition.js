@@ -1,7 +1,5 @@
 (function () {
   'use strict';
-  var root = document.documentElement;
-  root.classList.add('jasta-page-enter');
 
   var curtain = null;
   var navigating = false;
@@ -37,12 +35,11 @@
     if (navigating) return;
     navigating = true;
     var el = makeCurtain();
-    requestAnimationFrame(function () { el.classList.add('is-active'); });
-    window.setTimeout(function () { location.assign(a.href); }, 380);
+    window.setTimeout(function () { el.classList.add('is-active'); }, 20);
+    window.setTimeout(function () { location.assign(a.href); }, 430);
   }
 
   function enter() {
-    document.body.classList.add('jasta-ready');
     if (curtain) window.setTimeout(function () { curtain.classList.remove('is-active'); }, 120);
   }
 
