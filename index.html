@@ -411,11 +411,18 @@
   </div>
 
   <script>
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
+    const mouse = { x: -9999, y: -9999 };
+    if (!reduceMotion && cursor) {
+      document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        mouse.x = e.clientX; mouse.y = e.clientY;
+      }, { passive: true });
+    } else if (cursor) {
+      cursor.style.display = 'none';
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -424,6 +431,7 @@
           if (entry.target.querySelector('.stat-number')) {
             entry.target.querySelectorAll('.stat-number').forEach(animateCounter);
           }
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
@@ -431,7 +439,10 @@
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
     function animateCounter(el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
       const target = +el.getAttribute('data-target');
+      if (reduceMotion) { el.textContent = target; return; }
       const duration = 1500;
       const start = performance.now();
 
@@ -447,7 +458,7 @@
 
     const cv = document.getElementById('network-bg');
     const ctx = cv.getContext('2d');
-    let W, H, DPR;
+    let W, H, DPR, rafId = null, graphPaused = false;
 
     function resize() {
       DPR = window.devicePixelRatio || 1;
@@ -471,10 +482,8 @@
       });
     }
 
-    const mouse = { x: -9999, y: -9999 };
-    document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-
     function drawGraph() {
+      if (graphPaused) return;
       ctx.clearRect(0, 0, W, H);
 
       for (const n of nodes) {
@@ -482,12 +491,14 @@
         if (n.x < 0 || n.x > W) n.vx *= -1;
         if (n.y < 0 || n.y > H) n.vy *= -1;
 
-        const dx = n.x - mouse.x;
-        const dy = n.y - mouse.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 150) {
-          n.x += dx / dist * 1.5;
-          n.y += dy / dist * 1.5;
+        if (!reduceMotion) {
+          const dx = n.x - mouse.x;
+          const dy = n.y - mouse.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) {
+            n.x += dx / dist * 1.5;
+            n.y += dy / dist * 1.5;
+          }
         }
       }
 
@@ -512,9 +523,21 @@
         ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, Math.PI * 2);
         ctx.fill();
       }
-      requestAnimationFrame(drawGraph);
+      if (!reduceMotion) rafId = requestAnimationFrame(drawGraph);
     }
-    drawGraph();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        graphPaused = true;
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      } else if (graphPaused) {
+        graphPaused = false;
+        if (!reduceMotion) rafId = requestAnimationFrame(drawGraph);
+      }
+    });
+
+    if (reduceMotion) { drawGraph(); }
+    else { rafId = requestAnimationFrame(drawGraph); }
   </script>
 </body>
 </html>
