@@ -258,7 +258,7 @@
       border-top: 1px solid rgba(255,255,255,0.05);
     }
   
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
     .bento-section, .diary-section { scroll-margin-top: 84px; }
 
     .site-nav {
@@ -273,7 +273,10 @@
       background: rgba(10, 18, 14, 0.74);
       border-bottom: 1px solid var(--glass-border);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      pointer-events: none;
     }
+    .site-nav > * { pointer-events: auto; }
     .site-nav__brand {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
