@@ -269,3 +269,8 @@ body.map-wide footer {
   .map-lines { grid-template-columns: 1fr; }
   .map-tip { max-width: calc(100vw - 36px); }
 }
+
+
+@media (prefers-reduced-motion: reduce) {
+  #sky { animation: none !important; }
+}

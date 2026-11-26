@@ -188,6 +188,30 @@
       border-color: rgba(242, 193, 78, 0.3);
     }
     .bento-card.wide { grid-column: span 2; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+      .cursor-glow { display: none !important; }
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 12px;
+      z-index: 1000;
+      padding: 10px 14px;
+      background: var(--gold);
+      color: #1a1710;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 12px; }
+    a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
     @media (max-width: 768px) { .bento-card.wide { grid-column: span 1; } }
 
     .stat-number {
@@ -324,7 +348,7 @@
   <div class="cursor-glow" id="cursor"></div>
   <canvas id="network-bg"></canvas>
 
-  <div class="container">
+  <div class="container" id="main-content">
     <section class="hero fade-in">
       <div class="badge">Система активна · v2.0.26</div>
       <h1>Голос Джасты.</h1>

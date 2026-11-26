@@ -403,3 +403,7 @@ footer p { margin: 0 0 6px; }
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -100; }
 }
+
+
+.skip-link { position:absolute; left:-9999px; top:12px; z-index:1000; padding:10px 14px; background:var(--accent); color:#100f0e; border-radius:8px; font-weight:600; text-decoration:none; }
+.skip-link:focus { left:12px; }
