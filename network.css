@@ -113,6 +113,18 @@ body.map-wide footer {
   text-shadow: 0 1px 10px #000;
 }
 
+.map-data {
+  position: absolute;
+  z-index: 2;
+  left: min(4vw, 48px);
+  bottom: 64px;
+  font: 11px/1.4 system-ui, sans-serif;
+  color: rgba(190, 180, 165, .62);
+  letter-spacing: .04em;
+  text-shadow: 0 1px 8px #000;
+  pointer-events: none;
+}
+
 .map-legend {
   position: absolute;
   z-index: 3;
@@ -127,16 +139,24 @@ body.map-wide footer {
   color: #9f988d;
 }
 
-.map-legend span {
+.map-legend button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 3px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   cursor: pointer;
   text-shadow: 0 1px 8px #000;
 }
 
-.map-legend span:hover { color: #f0e5d5; }
+.map-legend button:hover,
+.map-legend button:focus-visible { color: #f0e5d5; outline: 1px solid var(--accent); }
+.map-legend button[aria-pressed="true"] { color: #f3d6b4; }
+.map-legend .map-legend-all { border: 1px solid var(--line); }
 .map-legend i {
   width: 8px;
   height: 8px;
@@ -242,6 +262,7 @@ body.map-wide footer {
   .map-overlay { top: 96px; left: 18px; right: 18px; max-width: none; }
   .map-overlay h1 { font-size: clamp(28px, 8vw, 40px); }
   .map-stats { left: 18px; bottom: 92px; }
+  .map-data { left: 18px; bottom: 128px; }
   .map-legend { left: 18px; right: 18px; bottom: 14px; max-width: none; justify-content: flex-start; }
   .map-hint { display: none; }
   .map-lines, .map-growth, .map-voice { margin-left: 18px; margin-right: 18px; }

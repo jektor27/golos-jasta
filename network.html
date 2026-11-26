@@ -21,7 +21,7 @@
 <link rel="alternate" type="application/rss+xml" title="Голос Джасты" href="feed.xml">
 <script src="player.js?v=1795629448" defer></script>
 <script src="pulse.js?v=1795629448" defer></script>
-<link rel="stylesheet" href="network.css?v=1795629448">
+<link rel="stylesheet" href="network.css?v=20261126b">
 <link rel="stylesheet" href="transition.css?v=7371d17a">
 <script src="transition.js?v=7371d17a"></script>
 </head>
@@ -39,7 +39,7 @@
 <main>
 <section class="map-page">
   <div class="map-stage">
-    <canvas id="sky" aria-label="Живая карта связей экосистемы"></canvas>
+    <canvas id="sky" tabindex="0" aria-label="Живая карта связей экосистемы. Стрелки — выбрать узел, Enter — открыть, Escape — сбросить."></canvas>
 
     <div class="map-overlay">
       <div class="map-kicker">Карта голоса · живое созвездие</div>
@@ -48,8 +48,9 @@
     </div>
 
     <div class="map-stats" id="stats"></div>
+    <div class="map-data">Данные карты на 26.11.2026</div>
     <div class="map-legend" id="legend"></div>
-    <div class="map-hint">Узел — страница. Свет — переход. Наведи, чтобы увидеть.</div>
+    <div class="map-hint">Узел — страница. Свет — переход. Наведи или коснись, чтобы увидеть. Данные на 26.11.2026.</div>
   </div>
 
   <div class="map-tip" id="tip"></div>
@@ -140,6 +141,7 @@ groups.forEach(function (g) {
 });
 
 let W = 0, H = 0, ready = false, hovered = null, focusGroup = null;
+let keyIndex = -1, touchHandled = false, paused = false;
 let edges = [], particles = [];
 
 function anchor(n) {
@@ -196,19 +198,41 @@ statsBox.innerHTML =
   '<div class="map-stat"><b>' + edges.length + '</b><span>связей между страницами</span></div>' +
   '<div class="map-stat"><b>' + cross + '</b><span>переходов между ресурсами</span></div>';
 
+const legendButtons = [];
+const allButton = document.createElement('button');
+allButton.type = 'button';
+allButton.className = 'map-legend-all';
+allButton.textContent = 'Все';
+allButton.title = 'Показать все ресурсы';
+allButton.setAttribute('aria-pressed', 'true');
+allButton.addEventListener('click', function () {
+  focusGroup = null;
+  syncLegend();
+});
+legendBox.appendChild(allButton);
+legendButtons.push(allButton);
+
 groups.forEach(function (g) {
-  const item = document.createElement('span');
+  const item = document.createElement('button');
+  item.type = 'button';
   item.innerHTML = '<i style="background:' + esc(groupColor[g]) + '"></i>' + esc(groupName[g]);
-  item.title = 'Нажми, чтобы оставить только этот ресурс';
+  item.title = 'Оставить только этот ресурс';
+  item.setAttribute('aria-pressed', 'false');
   item.addEventListener('click', function () {
     focusGroup = focusGroup === g ? null : g;
-    groups.forEach(function (other) {
-      const node = legendBox.children[groups.indexOf(other)];
-      if (node) node.style.opacity = focusGroup && focusGroup !== other ? '0.4' : '1';
-    });
+    syncLegend();
   });
   legendBox.appendChild(item);
+  legendButtons.push(item);
 });
+
+function syncLegend() {
+  allButton.setAttribute('aria-pressed', focusGroup ? 'false' : 'true');
+  legendButtons.slice(1).forEach(function (button, index) {
+    button.setAttribute('aria-pressed', focusGroup === groups[index] ? 'true' : 'false');
+    button.style.opacity = focusGroup && focusGroup !== groups[index] ? '0.4' : '1';
+  });
+}
 
 const io = {};
 groups.forEach(function (g) { io[g] = { in: 0, out: 0 }; });
@@ -246,33 +270,77 @@ function neighbors(node) {
   return set;
 }
 
-canvas.addEventListener('mousemove', function (event) {
+function showTip(node, clientX, clientY) {
+  if (!node) { tip.style.display = 'none'; return; }
+  tip.style.display = 'block';
+  tip.innerHTML = '<b>' + esc(node.label) + '</b><br>' + esc(node.groupName || groupName[node.group]) +
+    (node.url ? '<br><small>' + esc(node.url) + '</small>' : '<br><small>черновик без адреса</small>');
+  tip.style.left = Math.min(window.innerWidth - 330, Math.max(8, clientX + 16)) + 'px';
+  tip.style.top = Math.min(window.innerHeight - 110, Math.max(8, clientY + 16)) + 'px';
+}
+
+function setHoverFromPoint(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
-  const mx = event.clientX - rect.left;
-  const my = event.clientY - rect.top;
+  const mx = clientX - rect.left;
+  const my = clientY - rect.top;
   let best = null, bestDist = Infinity;
   nodes.forEach(function (n) {
     const d = Math.hypot(n.x - mx, n.y - my);
     if (d < n.baseR + 11 && d < bestDist) { best = n; bestDist = d; }
   });
   hovered = best;
+  keyIndex = best ? nodes.indexOf(best) : -1;
   canvas.style.cursor = best && best.url ? 'pointer' : 'default';
-  if (best) {
-    tip.style.display = 'block';
-    tip.innerHTML = '<b>' + esc(best.label) + '</b><br>' + esc(best.groupName || groupName[best.group]) +
-      (best.url ? '<br><small>' + esc(best.url) + '</small>' : '<br><small>черновик без адреса</small>');
-    tip.style.left = Math.min(window.innerWidth - 330, event.clientX + 16) + 'px';
-    tip.style.top = Math.min(window.innerHeight - 110, event.clientY + 16) + 'px';
-  } else {
-    tip.style.display = 'none';
+  showTip(best, clientX, clientY);
+}
+
+canvas.addEventListener('pointermove', function (event) {
+  setHoverFromPoint(event.clientX, event.clientY);
+});
+canvas.addEventListener('pointerleave', function () {
+  hovered = null;
+  keyIndex = -1;
+  tip.style.display = 'none';
+});
+canvas.addEventListener('pointerdown', function (event) {
+  setHoverFromPoint(event.clientX, event.clientY);
+  if (event.pointerType === 'touch') {
+    touchHandled = true;
+    if (hovered && hovered.url) window.open(hovered.url, '_blank', 'noopener');
   }
 });
-canvas.addEventListener('mouseleave', function () { hovered = null; tip.style.display = 'none'; });
 canvas.addEventListener('click', function () {
+  if (touchHandled) { touchHandled = false; return; }
   if (hovered && hovered.url) window.open(hovered.url, '_blank', 'noopener');
 });
 
+canvas.addEventListener('keydown', function (event) {
+  const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 :
+    (event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 0);
+  if (step) {
+    event.preventDefault();
+    keyIndex = (keyIndex + step + nodes.length) % nodes.length;
+    hovered = nodes[keyIndex];
+    const rect = canvas.getBoundingClientRect();
+    showTip(hovered, rect.left + hovered.x, rect.top + hovered.y);
+    canvas.setAttribute('aria-label', 'Узел: ' + hovered.label + (hovered.url ? ', ссылка' : ', без адреса'));
+    return;
+  }
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    if (hovered && hovered.url) window.open(hovered.url, '_blank', 'noopener');
+  }
+  if (event.key === 'Escape') {
+    hovered = null;
+    keyIndex = -1;
+    tip.style.display = 'none';
+    canvas.setAttribute('aria-label', 'Живая карта связей экосистемы. Стрелки — выбрать узел, Enter — открыть, Escape — сбросить.');
+  }
+});
+canvas.addEventListener('blur', function () { tip.style.display = 'none'; });
+
 function frame(time) {
+  if (paused) return;
   ctx.clearRect(0, 0, W, H);
 
   const depth = Math.min(W, H) * 0.5;
@@ -408,6 +476,14 @@ function frame(time) {
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) {
+    paused = true;
+  } else if (paused) {
+    paused = false;
+    requestAnimationFrame(frame);
+  }
+});
 </script>
 </main>
 <footer>
