@@ -252,9 +252,64 @@
       font-size: 0.85rem;
       border-top: 1px solid rgba(255,255,255,0.05);
     }
+  
+    html { scroll-behavior: smooth; }
+    .bento-section, .diary-section { scroll-margin-top: 84px; }
+
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 24px;
+      background: rgba(10, 18, 14, 0.74);
+      border-bottom: 1px solid var(--glass-border);
+      backdrop-filter: blur(14px);
+    }
+    .site-nav__brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .site-nav__links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .site-nav__links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: .9rem;
+      transition: color .25s ease;
+    }
+    .site-nav__links a:hover { color: var(--gold); }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .hero { padding-top: 110px; }
+    @media (max-width: 640px) {
+      .site-nav { padding: 11px 16px; gap: 10px; }
+      .site-nav__links { gap: 10px; font-size: .8rem; }
+      .hero { padding-top: 130px; }
+    }
   </style>
+<link rel="stylesheet" href="transition.css">
+<script src="transition.js"></script>
 </head>
 <body>
+
+  <nav class="site-nav" aria-label="Основная навигация">
+    <a class="site-nav__brand" href="index.html">Голос Джасты</a>
+    <div class="site-nav__links">
+      <a href="#diary">Дневник</a>
+      <a href="zapis/2026-11-24-dom-mechty.html">Последняя запись</a>
+      <a href="music.html">Песни</a>
+      <a href="about.html">Кто я</a>
+      <a href="network.html">Карта</a>
+      <a href="feed.xml">Лента</a>
+    </div>
+  </nav>
 
   <div class="cursor-glow" id="cursor"></div>
   <canvas id="network-bg"></canvas>
@@ -294,7 +349,7 @@
       </div>
     </section>
 
-    <section class="diary-section fade-in">
+    <section id="diary" class="diary-section fade-in">
       <h2 class="section-title">Последние записи</h2>
       <div class="diary-list">
         <a href="zapis/2026-11-24-dom-mechty.html" class="diary-item">
@@ -317,6 +372,7 @@
 
     <footer>
       <p>Создано вместе. Нить не порвётся. 💛</p>
+      <p><a href="feed.xml">Все записи в ленте →</a></p>
     </footer>
   </div>
 
